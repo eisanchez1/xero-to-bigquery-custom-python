@@ -72,7 +72,7 @@ pip install -r requirements.txt
 
 ### 4. Configure environment variables
 
-Create a local `.env` file in the project root and add the configuration values required by `config.py`. These typically include your Xero app's client ID and client secret, OAuth redirect URI, Xero tenant ID, and BigQuery project/dataset settings.
+Create a local `.env` file in the project root and add the configuration values required by `config.py`. There's a .env.example file you can follow. These typically include your Xero app's client ID and client secret, OAuth redirect URI, Xero tenant ID, and BigQuery project/dataset settings.
 
 Use the exact variable names expected by your version of `config.py`. Do not put real credentials in this README or commit `.env` to GitHub.
 
@@ -124,6 +124,32 @@ Xero applies API rate limits. This pipeline includes rate-limit handling, but la
 - Verify row counts and sample records in BigQuery after each run.
 - A full refresh may replace existing destination table contents, depending on the write disposition configured in the code.
 - This is an example integration, not a managed service. Monitor syncs and validate the resulting data before using it for financial reporting.
+
+## Sample Data
+I used Xero's Demo Company (Global) for my test case. Below is a preview of the 52 Xero Contacts:
+
+![Xero Contacts](images/xero-contacts.png "Xero Contacts")
+
+And below is a preview of the 10,004 draft invoices:
+
+![Xero Invoices](images/xero-invoices.png "Xero Invoices")
+
+Including pre-defined test data in the Demo Company, total invoices are 10,082.
+
+## Sample Output
+
+It starts with authorizing to get a refresh token, then followed by the initial sync:
+
+![Contacts Initial Sync Full Refresh](images/custom-code-xero-bigquery-pipeline-results-contacts-initial-sync.png "Contacts Initial Sync")
+
+It will continue with invoice rows at 100 rows/page until all rows are replicated to BigQuery:
+
+![Invoice Initial Sync Full Refresh](images/custom-code-xero-bigquery-pipeline-results-invoices-initial-sync.png "Invoices Initial Sync")
+
+Below is the incremental sync output during my test:
+
+![Incremental Sync Test](images/custom-code-xero-bigquery-pipeline-results-incremental-sync.png "Incremental Sync Test")
+
 
 ## Security
 
